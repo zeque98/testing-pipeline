@@ -22,10 +22,10 @@ jobs:
 
       - uses: actions/download-artifact@v4
         with:
-          name: 1437275747
+          name: dist
           path: dist
-          # github-token: ${{ secrets.GITHUB_TOKEN }}
-          # run-id: ${{ github.event.workflow_run.id }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          run-id: 1437275747
 
       - name: Display structure of downloaded files
         run: ls -R dist

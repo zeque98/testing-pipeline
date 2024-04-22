@@ -1,4 +1,4 @@
-name: build
+name: gcs_deploy
 
 on:
   workflow_run:

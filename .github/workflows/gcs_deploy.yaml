@@ -22,7 +22,7 @@ jobs:
           name: dist
           path: dist
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          run-id: test-build
+          run-id: dist
 
       - name: Display structure of downloaded files
         run: ls -R dist

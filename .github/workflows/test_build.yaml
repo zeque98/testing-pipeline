@@ -35,7 +35,7 @@ jobs:
           credentials_json: '${{ secrets.GOOGLE_CREDENTIALS }}'
 
       - name: Install dependencies
-        run: npm install
+        run: npm ci
 
       - run: echo 'Setup completed'
 
@@ -48,3 +48,5 @@ jobs:
           path: 'dist'
           destination: 'www.sistemasgalacticos.com'
           parent: false
+          # Process a .gcloudignore file present in the top-level of the repository. If true, the file is parsed and any filepaths that match are not uploaded to the storage bucket. Defaults to true.
+          # process_gcloudignore: false

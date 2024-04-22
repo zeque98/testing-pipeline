@@ -37,61 +37,11 @@ jobs:
         run: npm run build
 
       - uses: actions/upload-artifact@v4
+        id: artifact-upload-step
         with:
           name: dist
           path: dist
+          if-no-files-found: error
 
-      # - uses: actions/download-artifact@v4
-      #   with:
-      #     name: dist
-      #     path: dist
-      # - name: Display structure of downloaded files
-      #   run: ls -R your/destination/dir
-
-      # - uses: 'google-github-actions/auth@v2'
-      #   if: ${{ github.event_name == 'push' }}
-      #   with:
-      #     credentials_json: '${{ secrets.GOOGLE_CREDENTIALS }}'
-
-      # - id: 'upload-folder'
-      #   if: ${{ github.event_name == 'push' }}
-      #   uses: 'google-github-actions/upload-cloud-storage@v2'
-      #   with:
-      #     path: 'dist'
-      #     destination: 'www.sistemasgalacticos.com'
-      #     parent: false
-      #     # Process a .gcloudignore file present in the top-level of the repository. If true, the file is parsed and any filepaths that match are not uploaded to the storage bucket. Defaults to true.
-      #     # process_gcloudignore: false
-
-  gcs:
-    runs-on: ubuntu-latest
-    permissions:
-      contents: 'read'
-      id-token: 'write'
-
-    if: ${{ github.event_name == 'push' }}
-
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/download-artifact@v4
-        with:
-          name: dist
-          path: dist
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Display structure of downloaded files
-        run: ls -R dist
-
-      - uses: 'google-github-actions/auth@v2'
-        with:
-          credentials_json: '${{ secrets.GOOGLE_CREDENTIALS }}'
-
-      - id: 'upload-folder'
-        if: ${{ github.event_name == 'push' }}
-        uses: 'google-github-actions/upload-cloud-storage@v2'
-        with:
-          path: 'dist'
-          destination: 'www.sistemasgalacticos.com'
-          parent: false
-          # Process a .gcloudignore file present in the top-level of the repository. If true, the file is parsed and any filepaths that match are not uploaded to the storage bucket. Defaults to true.
-          # process_gcloudignore: false
+      - name: Output artifact ID
+        run: echo 'Artifact ID is ${{ steps.artifact-upload-step.outputs.artifact-id }}'

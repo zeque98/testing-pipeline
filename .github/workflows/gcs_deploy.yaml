@@ -6,15 +6,13 @@ on:
     types:
       - completed
 
-permissions:
-  contents: 'read'
-  id-token: 'write'
-
 jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
+      - run: echo 'Artifact ID is ${{ github.event.workflow_run.id }}'
 
       - uses: actions/download-artifact@v4
         with:

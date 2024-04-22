@@ -1,4 +1,4 @@
-name: gcs_deploy
+name: build
 
 # on:
 #   push:

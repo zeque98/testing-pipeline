@@ -1,8 +1,10 @@
-name: gcs_deploy
+name: build
 
 on:
-  push:
-    branches: [main]
+  workflow_run:
+    workflows: ['test-build']
+    types:
+      - completed
 
 permissions:
   contents: 'read'
@@ -17,12 +19,14 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+
       - uses: actions/download-artifact@v4
         with:
-          name: dist
+          # name: dist
           path: dist
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          run-id: dist
+          run-id: ${{ github.event.workflow_run.id }}
+          pattern: 'dist/**'
 
       - name: Display structure of downloaded files
         run: ls -R dist

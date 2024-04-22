@@ -13,4 +13,12 @@ export default defineConfig({
   resolve: {
     alias,
   },
+  build: {
+    rollupOptions: {
+      output: {
+        entryFileNames: 'index.js',
+        assetFileNames: 'index.css',
+      },
+    },
+  },
 });

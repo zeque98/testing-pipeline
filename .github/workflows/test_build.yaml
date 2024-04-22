@@ -1,0 +1,94 @@
+name: test-build
+
+on:
+  pull_request:
+    branches: [main]
+
+  push:
+    branches: [main]
+
+permissions:
+  issues: write
+  pull-requests: write
+  statuses: write
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.head.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: 'package.json'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - run: echo 'Setup completed'
+
+      - name: Build
+        run: npm run build
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: dist
+
+      # - uses: actions/download-artifact@v4
+      #   with:
+      #     name: dist
+      #     path: dist
+      # - name: Display structure of downloaded files
+      #   run: ls -R your/destination/dir
+
+      # - uses: 'google-github-actions/auth@v2'
+      #   if: ${{ github.event_name == 'push' }}
+      #   with:
+      #     credentials_json: '${{ secrets.GOOGLE_CREDENTIALS }}'
+
+      # - id: 'upload-folder'
+      #   if: ${{ github.event_name == 'push' }}
+      #   uses: 'google-github-actions/upload-cloud-storage@v2'
+      #   with:
+      #     path: 'dist'
+      #     destination: 'www.sistemasgalacticos.com'
+      #     parent: false
+      #     # Process a .gcloudignore file present in the top-level of the repository. If true, the file is parsed and any filepaths that match are not uploaded to the storage bucket. Defaults to true.
+      #     # process_gcloudignore: false
+
+  gcs:
+    runs-on: ubuntu-latest
+    needs: build
+
+    permissions:
+      contents: 'read'
+      id-token: 'write'
+
+    if: ${{ github.event_name == 'push' }}
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist
+
+      - uses: 'google-github-actions/auth@v2'
+        with:
+          credentials_json: '${{ secrets.GOOGLE_CREDENTIALS }}'
+
+      - id: 'upload-folder'
+        if: ${{ github.event_name == 'push' }}
+        uses: 'google-github-actions/upload-cloud-storage@v2'
+        with:
+          path: 'dist'
+          destination: 'www.sistemasgalacticos.com'
+          parent: false
+          # Process a .gcloudignore file present in the top-level of the repository. If true, the file is parsed and any filepaths that match are not uploaded to the storage bucket. Defaults to true.
+          # process_gcloudignore: false

@@ -21,8 +21,8 @@ jobs:
         with:
           name: dist
           path: dist
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          run-id: test-build
+          # github-token: ${{ secrets.GITHUB_TOKEN }}
+          # run-id: ${{ github.event.workflow_run.id }}
 
       - name: Display structure of downloaded files
         run: ls -R dist

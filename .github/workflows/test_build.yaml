@@ -7,11 +7,6 @@ on:
   push:
     branches: [main]
 
-permissions:
-  issues: write
-  pull-requests: write
-  statuses: write
-
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.head.ref }}
   cancel-in-progress: ${{ github.event_name == 'pull_request' }}

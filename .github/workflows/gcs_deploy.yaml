@@ -1,6 +1,9 @@
-name: build
+name: gcs_deploy
 
 on:
+  push:
+    branches:
+      - main
   workflow_run:
     workflows: ['test-build']
     types:
@@ -16,9 +19,6 @@ jobs:
 
       - uses: actions/download-artifact@v4
         with:
-          name: dist
-          path: dist
-          github-token: ${{ secrets.GITHUB_TOKEN }}
           run-id: ${{ github.event.workflow_run.id }}
 
       - name: Display structure of downloaded files

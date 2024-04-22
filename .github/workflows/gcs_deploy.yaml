@@ -20,15 +20,13 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - run: echo 'Artifact ID is ${{ github.event.workflow_run.id }}'
-
       - uses: actions/download-artifact@v4
         with:
           # name: dist
           path: dist
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          # run-id: ${{ github.event.workflow_run.id }}
-          run-id: 1437275747
+          # run-id: 1437275747
+          pattern: 'dist/**'
 
       - name: Display structure of downloaded files
         run: ls -R dist

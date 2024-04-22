@@ -77,6 +77,11 @@ jobs:
         with:
           name: dist
           path: dist
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          run-id: build
+
+      - name: Display structure of downloaded files
+        run: ls -R dist
 
       - uses: 'google-github-actions/auth@v2'
         with:

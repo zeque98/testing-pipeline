@@ -1,7 +1,16 @@
-import { defineConfig } from 'vite'
-import preact from '@preact/preset-vite'
+import { defineConfig, type AliasOptions } from 'vite';
+import preact from '@preact/preset-vite';
+
+const alias: AliasOptions = {
+  components: '/src/components',
+  state: '/src/state',
+};
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  base: '',
   plugins: [preact()],
-})
+  resolve: {
+    alias,
+  },
+});

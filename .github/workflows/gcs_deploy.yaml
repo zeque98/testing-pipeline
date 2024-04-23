@@ -19,6 +19,9 @@ jobs:
 
       - uses: actions/download-artifact@v4
         with:
+          name: dist
+          path: dist
+          github-token: ${{ secrets.GITHUB_TOKEN }}
           run-id: ${{ github.event.workflow_run.id }}
 
       - name: Display structure of downloaded files
@@ -29,7 +32,6 @@ jobs:
           credentials_json: '${{ secrets.GOOGLE_CREDENTIALS }}'
 
       - id: 'upload-folder'
-        # if: ${{ github.event_name == 'push' }}
         uses: 'google-github-actions/upload-cloud-storage@v2'
         with:
           path: 'dist'
